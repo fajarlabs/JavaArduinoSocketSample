@@ -1,0 +1,206 @@
+package com.arduino.controller;
+
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.text.DefaultCaret;
+
+import com.arduino.util.SocketEngine;
+
+import javax.swing.JTextField;
+
+/**
+ * 
+ * @author masfajar
+ *
+ */
+
+public class BoardArduino extends JFrame {
+
+	private JPanel contentPane;
+	private SocketEngine socket;
+	String led1 = "nyala";
+	String led2 = "nyala";
+	int init = 0;
+	private Arduino arduino;
+	private JTextField txtServerName;
+	private JTextField txtPort;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					BoardArduino frame = new BoardArduino();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public BoardArduino() {
+		// Init socket
+		socket = new SocketEngine("127.0.0.1","12000");
+		
+		
+		setTitle("Simulasi Komunikasi Serial Arduino (Duemilanove) dengan Java");
+		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 402, 369);
+		contentPane = new JPanel();
+		contentPane.setBorder(null);
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JTextArea txtarea = new JTextArea();
+		txtarea.setForeground(new Color(255, 255, 255));
+		txtarea.setBackground(new Color(0, 0, 0));
+		txtarea.setEditable(false);
+		
+		// Ambil caret-nya agar selalu update dan scroll kebawah
+		DefaultCaret caret = (DefaultCaret)txtarea.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		// Masukkan textarea kedalam scrollpane
+		JScrollPane sp = new JScrollPane(txtarea);
+		sp.setVisible(true);
+		sp.setSize(100,100);
+		sp.setBounds(12, 205, 376, 132);
+		
+		// Tambahkan kedalam komponen
+		contentPane.add(sp);
+
+		JButton btnL2 = new JButton("Hidupkan LED A");
+		btnL2.setEnabled(false);
+		btnL2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				if (led2.equals("nyala")) {
+					led2 = "mati";
+					btnL2.setLabel("LED B Hidup");
+					arduino.sendData("y");
+				} else {
+					led2 = "nyala";
+					btnL2.setLabel("Hidupkan LED B");
+					arduino.sendData("Y");
+				}
+			}
+		});
+		btnL2.setBounds(10, 65, 189, 63);
+		contentPane.add(btnL2);
+
+		JButton btnL1 = new JButton("Hidupkan LED B");
+		btnL1.setEnabled(false);
+
+		btnL1.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent arg0) {
+				// if (test.initialize()) {
+				if (led1.equals("nyala")) {
+					led1 = "mati";
+					btnL1.setText("LED A Hidup");
+					arduino.sendData("n");
+				} else {
+					led1 = "nyala";
+					btnL1.setText("Hidupkan LED A");
+					arduino.sendData("N");
+				}
+
+				// test.close();
+				// }
+			}
+		});
+		btnL1.setBounds(209, 65, 179, 63);
+		contentPane.add(btnL1);
+
+		JButton btnInit = new JButton("Hubungkan ke Arduino");
+		btnInit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (init == 0) {
+					init = 1;
+					arduino = new Arduino(txtarea);
+					if (arduino.initialize()) {
+						btnInit.setBackground(Color.RED);
+						btnInit.setLabel("Mati");
+						btnL1.setEnabled(true);
+						btnL2.setEnabled(true);
+					}
+				} else {
+					init = 0;
+					if (arduino != null) {
+						arduino.close();
+						arduino = null;
+						btnInit.setBackground(Color.GREEN);
+						btnInit.setLabel("Hidup");
+						btnL1.setEnabled(false);
+						btnL2.setEnabled(false);
+						txtarea.append("Perangkat : Mati \n");
+						txtarea.setCaretPosition(txtarea.getDocument().getLength());
+					}
+
+				}
+			}
+		});
+		btnInit.setForeground(Color.WHITE);
+		btnInit.setBackground(Color.GREEN);
+		btnInit.setBounds(10, 11, 378, 43);
+		contentPane.add(btnInit);
+
+		JLabel lblNewLabel = new JLabel("Server");
+		lblNewLabel.setBounds(12, 145, 59, 14);
+		contentPane.add(lblNewLabel);
+		
+		JButton btnOnlineService = new JButton("Socket ON");
+		btnOnlineService.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(socket.connect()) {
+					socket.sendRequest("SEND : HELLO FROM CLIENT");
+					txtarea.append("FEEDBACK : "+socket.getResponse()+"\n");
+					txtarea.setCaretPosition(txtarea.getDocument().getLength());
+					socket.close();
+				}
+			      
+			}
+		});
+		btnOnlineService.setBounds(209, 139, 179, 55);
+		contentPane.add(btnOnlineService);
+		
+		txtServerName = new JTextField();
+		txtServerName.setText("127.0.0.1");
+		txtServerName.setBounds(59, 142, 140, 20);
+		contentPane.add(txtServerName);
+		txtServerName.setColumns(10);
+		
+		txtPort = new JTextField();
+		txtPort.setText("12000");
+		txtPort.setBounds(59, 174, 67, 20);
+		contentPane.add(txtPort);
+		txtPort.setColumns(10);
+		
+		JLabel lblPort = new JLabel("Port");
+		lblPort.setBounds(12, 177, 36, 14);
+		contentPane.add(lblPort);
+	}
+}

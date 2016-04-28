@@ -1,0 +1,67 @@
+package com.socketclient.controller;
+
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+
+public class SocketEngine {
+	private String servername;
+	private String port;
+	private static Socket socket;
+	
+	public String getServername() {
+		return servername;
+	}
+
+	public void setServername(String servername) {
+		this.servername = servername;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+	
+	public void connect() {
+	      try
+	      {
+	    	  if(socket == null) 
+	               socket = new Socket(this.getServername(), Integer.parseInt(this.getPort()) );
+	    	  else {
+	    		  boolean connected = socket.isConnected() && !socket.isClosed();
+	    		  if(!connected) {
+	    			  socket = null;
+	    			  socket = new Socket(this.getServername(), Integer.parseInt(this.getPort()) );
+	    		  }
+	    	  }
+	    		  
+	      } catch(IOException e) {
+	         e.printStackTrace();
+	      }		
+	}
+	
+	public void reconnect() {
+		
+	}
+	
+	public void close() {
+		
+	}
+
+	public SocketEngine(String servername, String port) {
+		setServername(servername);
+		setPort(port);
+	}
+	
+	public SocketEngine() {
+		
+	}
+	
+	
+}

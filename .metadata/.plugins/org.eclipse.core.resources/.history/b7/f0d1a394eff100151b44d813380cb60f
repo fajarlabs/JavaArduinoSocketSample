@@ -1,0 +1,33 @@
+package com.socketclient.controller;
+
+public class SocketEngine {
+	private String servername;
+	private String port;
+	
+	public String getServername() {
+		return servername;
+	}
+
+	public void setServername(String servername) {
+		this.servername = servername;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+
+	public SocketEngine(String servername, String port) {
+		setServername(servername);
+		setPort(port);
+	}
+	
+	public SocketEngine() {
+		
+	}
+	
+	
+}

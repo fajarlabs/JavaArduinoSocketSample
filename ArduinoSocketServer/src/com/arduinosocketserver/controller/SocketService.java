@@ -12,19 +12,24 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.arduinosocketserver.util.FArduino;
+import com.arduinosocketserver.util.AppArduino;
 
 
 public class SocketService extends Thread {
 	private ServerSocket serverSocket;
-	private FArduino arduino;
+	private AppArduino arduino;
 
 	public SocketService(int port) throws IOException {
+		// Init socket service
 		serverSocket = new ServerSocket(port);
 		serverSocket.setSoTimeout(10000);
-		this.arduino = new FArduino();
-		if(!this.arduino.initialize())
-			System.exit(0);
+		
+		// Init arduino connection
+		//arduino = new AppArduino();
+		// If connection is failed, then ?
+		//if(!arduino.initialize())
+			// Shutdown program
+		//	System.exit(0);
 	}
 
 	public void run() {

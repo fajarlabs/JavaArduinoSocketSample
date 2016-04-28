@@ -1,0 +1,96 @@
+package com.arduino.controller;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+import java.awt.Color;
+import javax.swing.JTextArea;
+
+public class BoardArduino extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					BoardArduino frame = new BoardArduino();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public BoardArduino() {
+		Arduino test = new Arduino();
+		test.initialize();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 209);
+		contentPane = new JPanel();
+		contentPane.setBorder(null);
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JButton btnNewButton = new JButton("Nyalakan LED A");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				//if (test.initialize()) {
+					test.sendData("y");
+				//	test.close();
+				//}
+			}
+		});
+		btnNewButton.setBounds(10, 108, 144, 23);
+		contentPane.add(btnNewButton);
+		
+		JLabel lblArduinoBoard = new JLabel("SIMULASI ARDUINO DENGAN JAVA");
+		lblArduinoBoard.setBackground(Color.GREEN);
+		lblArduinoBoard.setHorizontalAlignment(SwingConstants.CENTER);
+		lblArduinoBoard.setBounds(10, 11, 414, 14);
+		contentPane.add(lblArduinoBoard);
+		
+		JButton btnNewButton_1 = new JButton("Nyalakan LED B");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//if (test.initialize()) {
+					test.sendData("n");
+					//test.close();
+				//}
+			}
+		});
+		btnNewButton_1.setBounds(10, 142, 144, 23);
+		contentPane.add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("Hubungkan Device");
+		btnNewButton_2.setForeground(Color.WHITE);
+		btnNewButton_2.setBackground(Color.RED);
+		btnNewButton_2.setBounds(13, 36, 141, 61);
+		contentPane.add(btnNewButton_2);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setText("HELLO");
+		textArea.setBounds(164, 55, 260, 110);
+		contentPane.add(textArea);
+		
+		JLabel lblNewLabel = new JLabel("Console :");
+		lblNewLabel.setBounds(164, 36, 89, 14);
+		contentPane.add(lblNewLabel);
+	}
+}

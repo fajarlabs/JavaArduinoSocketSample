@@ -20,8 +20,7 @@ import javax.swing.text.DefaultCaret;
 
 import org.json.simple.JSONObject;
 
-import com.arduinoboarddesktop.util.FArduino;
-import com.arduinoboarddesktop.util.FSocket;
+import com.arduinoboarddesktop.util.AppArduino;
 
 /**
  * 
@@ -36,13 +35,10 @@ public class BoardArduino extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private FSocket socket;
 	Map<String,Boolean> lock = new HashMap<String,Boolean>();
 	
 	int init = 0;
-	private FArduino arduino;
-	private JTextField txtServerName;
-	private JTextField txtPort;
+	private AppArduino arduino;
 
 	/**
 	 * Launch the application.
@@ -65,12 +61,11 @@ public class BoardArduino extends JFrame {
 	 */
 	public BoardArduino() {
 		// Init socket
-		socket = new FSocket("127.0.0.1", "12000");
 
 		setTitle("Simulasi Komunikasi Serial Arduino (Duemilanove) dengan Java");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 402, 357);
+		setBounds(100, 100, 402, 246);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
 		setContentPane(contentPane);
@@ -88,7 +83,7 @@ public class BoardArduino extends JFrame {
 		JScrollPane sp = new JScrollPane(txtarea);
 		sp.setVisible(true);
 		sp.setSize(100, 100);
-		sp.setBounds(10, 213, 376, 110);
+		sp.setBounds(10, 105, 376, 105);
 
 		// Tambahkan kedalam komponen
 		contentPane.add(sp);
@@ -112,7 +107,7 @@ public class BoardArduino extends JFrame {
 				}
 			}
 		});
-		btnS1.setBounds(10, 65, 123, 63);
+		btnS1.setBounds(10, 65, 123, 29);
 		contentPane.add(btnS1);
 
 		JButton btnS2 = new JButton("Hidupkan LED Hijau");
@@ -135,7 +130,7 @@ public class BoardArduino extends JFrame {
 				}
 			}
 		});
-		btnS2.setBounds(143, 65, 117, 63);
+		btnS2.setBounds(143, 65, 117, 29);
 		contentPane.add(btnS2);
 		
 		JButton btnS3 = new JButton("Hidupkan LED Kuning");
@@ -156,7 +151,7 @@ public class BoardArduino extends JFrame {
 			}
 		});
 		btnS3.setEnabled(false);
-		btnS3.setBounds(269, 65, 117, 63);
+		btnS3.setBounds(269, 65, 117, 29);
 		contentPane.add(btnS3);		
 
 		JButton btnInit = new JButton("Hubungkan Arduino");
@@ -164,7 +159,7 @@ public class BoardArduino extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if (init == 0) {
 					init = 1;
-					arduino = new FArduino(txtarea);
+					arduino = new AppArduino(txtarea);
 					// Aktifkan arduino
 					if (arduino.initialize()) {
 						btnInit.setBackground(Color.RED);
@@ -195,53 +190,5 @@ public class BoardArduino extends JFrame {
 		btnInit.setBackground(Color.GREEN);
 		btnInit.setBounds(10, 11, 378, 43);
 		contentPane.add(btnInit);
-
-		JPanel panel = new JPanel();
-		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel.setBackground(new Color(128, 128, 128));
-		panel.setBounds(10, 139, 376, 63);
-		contentPane.add(panel);
-		panel.setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("Server Bridge");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblNewLabel.setForeground(new Color(0, 255, 0));
-		lblNewLabel.setBounds(10, 11, 85, 14);
-		panel.add(lblNewLabel);
-
-		txtServerName = new JTextField();
-		txtServerName.setBounds(10, 26, 132, 20);
-		panel.add(txtServerName);
-		txtServerName.setText("127.0.0.1");
-		txtServerName.setColumns(10);
-
-		JLabel lblPort = new JLabel("Port Bridge");
-		lblPort.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		lblPort.setForeground(new Color(0, 255, 0));
-		lblPort.setBounds(144, 11, 85, 14);
-		panel.add(lblPort);
-
-		txtPort = new JTextField();
-		txtPort.setBounds(144, 26, 70, 20);
-		panel.add(txtPort);
-		txtPort.setText("12000");
-		txtPort.setColumns(10);
-
-		JButton btnOnlineService = new JButton("Socket ON");
-		btnOnlineService.setBounds(224, 25, 142, 23);
-		btnOnlineService.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (socket.connect()) {
-					JSONObject obj = new JSONObject();
-					obj.put("command", "r");
-					socket.sendRequest(obj.toString());
-					txtarea.append("FEEDBACK : " + socket.getResponse() + "\n");
-					txtarea.setCaretPosition(txtarea.getDocument().getLength());
-					socket.disconnect();
-				}
-
-			}
-		});
-		panel.add(btnOnlineService);
 	}
 }
