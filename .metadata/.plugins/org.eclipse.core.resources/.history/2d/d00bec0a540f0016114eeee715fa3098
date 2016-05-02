@@ -1,0 +1,27 @@
+package com.app.controller;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import com.app.sqlite.dao.AppArduinoSwitchDAO;
+import com.app.sqlite.model.AppArduinoSwitch;
+import com.app.sqlite.util.SQLiteUtil;
+
+public class SQLite_JDBC {
+	public static void main(String args[]) {
+		//AppArduinoSwitchDAO.createTable();
+
+		AppArduinoSwitchDAO.add(new AppArduinoSwitch(1,"S7",1));
+		try {
+			SQLiteUtil.getInstance().createStatement().close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		AppArduinoSwitchDAO.add(new AppArduinoSwitch(2,"S8",0));
+		List<AppArduinoSwitch> result = AppArduinoSwitchDAO.read();
+		for(AppArduinoSwitch res : result) {
+			System.out.println(res.getSwitchName());
+		}
+	}
+}

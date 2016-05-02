@@ -1,0 +1,35 @@
+package com.app.sqlite.model;
+
+public class AppArduinoSwitch {
+	private int id;
+	private String switchName;
+	private int switchActive;
+	
+	public AppArduinoSwitch() { }
+	
+	public AppArduinoSwitch(int id, String switchName, int switchActive) {
+		super();
+		this.id = id;
+		this.switchName = switchName;
+		this.switchActive = switchActive;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getSwitchName() {
+		return switchName;
+	}
+	public void setSwitchName(String switchName) {
+		this.switchName = switchName;
+	}
+	public int getSwitchActive() {
+		return switchActive;
+	}
+	public void setSwitchActive(int switchActive) {
+		this.switchActive = switchActive;
+	}
+}

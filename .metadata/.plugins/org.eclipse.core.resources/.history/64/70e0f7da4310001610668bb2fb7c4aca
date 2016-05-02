@@ -1,0 +1,20 @@
+package com.app.socket.util;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.SocketException;
+
+public class SocketServerUtil {
+
+	private ServerSocket serverSocket;
+	
+	public SocketServerUtil(int port, int timeOut) {
+		try {
+			serverSocket = new ServerSocket(port);
+			serverSocket.setSoTimeout(timeOut);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}

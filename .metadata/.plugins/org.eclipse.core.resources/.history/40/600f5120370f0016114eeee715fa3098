@@ -1,0 +1,15 @@
+package com.app.controller;
+
+import java.sql.ResultSet;
+
+import com.app.sqlite.util.SQLiteUtil;
+
+public class SQLite_JDBC {
+	public static void main(String args[]) {
+	      String sql = "CREATE TABLE APP_ARDUINO_SWITCH " +
+                  "(ID INT PRIMARY KEY     NOT NULL," +
+                  " SWITCH_NAME    CHAR(5)    NOT NULL, " + 
+                  " SWITCH_ACTIVE  INT     NOT NULL)";
+		ResultSet rs = SQLiteUtil.getInstance().createStatement().executeQuery(sql);
+	}
+}

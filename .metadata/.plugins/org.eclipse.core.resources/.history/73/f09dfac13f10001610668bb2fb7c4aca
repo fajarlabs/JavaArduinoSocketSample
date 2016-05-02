@@ -1,0 +1,7 @@
+package com.app.ws.util;
+
+import com.app.config.AppPort;
+
+public class AppUrlPublisher {
+	public final static String URL_WS = "http://localhost:"+AppPort.WsPort+"/ws/app?wsdl";
+}

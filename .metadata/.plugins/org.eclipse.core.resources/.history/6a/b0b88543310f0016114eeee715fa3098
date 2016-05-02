@@ -1,0 +1,11 @@
+package com.app.controller;
+
+import com.app.sqlite.util.SQLiteUtil;
+
+public class SQLite_JDBC
+{
+  public static void main( String args[] )
+  {
+	  SQLiteUtil.getInstance().exec();
+  }
+}

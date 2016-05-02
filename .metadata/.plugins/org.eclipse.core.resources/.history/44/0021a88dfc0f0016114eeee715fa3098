@@ -1,0 +1,6 @@
+package com.app.util;
+
+public class AppUrlPublisher {
+	public final static String URL_WS = "http://localhost:9191/ws/app?wsdl";
+	public final static String URL_APP = "http://localhost:8080";
+}

@@ -1,0 +1,130 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+//File Name GreetingServer.java
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.util.List;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.app.arduino.util.AppArduino;
+import com.app.config.AppPort;
+import com.app.sqlite.dao.AppArduinoSwitchDAO;
+import com.app.sqlite.model.AppArduinoSwitch;
+
+/**
+ * 
+ * @author masfajar
+ *
+ */
+
+public class SocketService extends Thread {
+	private ServerSocket serverSocket;
+	private AppArduino arduino;
+	private Boolean loop = true;
+
+	public SocketService(int port) throws IOException {
+		// Init socket service
+		serverSocket = new ServerSocket(port);
+		serverSocket.setSoTimeout(10000);
+
+		// Init arduino connection
+		arduino = new AppArduino();
+		// If connection is failed, then ?
+		if (!arduino.initialize())
+			// Shutdown program
+			System.exit(0);
+		@SuppressWarnings("unused")
+		AppArduinoSwitch d = new AppArduinoSwitch();
+		// Update last setting by temporary DB
+		List<AppArduinoSwitch> tempData = AppArduinoSwitchDAO.read();
+		for (AppArduinoSwitch o : tempData) {
+			arduino.sendData(o.getCommandValue());
+		}
+
+	}
+
+	public void run() {
+		while (loop) {
+			try {
+				System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
+				// Accept Socket-nya
+				Socket server = serverSocket.accept();
+
+				// Status koneksi socket
+				// System.out.println("Just connected to "+
+				// server.getRemoteSocketAddress());
+
+				// Input stream
+				DataInputStream in = new DataInputStream(server.getInputStream());
+				// Response data
+				DataOutputStream out = new DataOutputStream(server.getOutputStream());
+				// Receive Data
+				String readUTF = in.readUTF();
+				// System.out.println(readUTF);
+				JSONParser parser = new JSONParser();
+				// Receive JSON Object
+				JSONObject jsonObject = null;
+				try {
+					jsonObject = (JSONObject) parser.parse(readUTF);
+					String switchName = (String) jsonObject.get("switchName");
+					String commandValue = (String) jsonObject.get("commandValue");
+
+					// Update temporary DB
+					AppArduinoSwitch o = new AppArduinoSwitch(null, switchName, commandValue);
+					AppArduinoSwitchDAO.updateBySwitchName(o);
+
+					// Send to arduino
+					arduino.sendData(commandValue);
+					
+					out.writeUTF("Data diterima");
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				// Berikan informasi keluar
+				DataOutputStream out = new DataOutputStream(server.getOutputStream());
+				// Send Data
+				// out.writeUTF("FROM SERVER Thank you for connecting to " +
+				// server.getLocalSocketAddress() + "\n");
+				out.writeUTF(jsonObject.toString());
+				// SocketEngine se = new SocketEngine(ip_tujuan,port_tujuan);
+				// if(se.connect()) {
+				// se.sendRequest("Data Dari Server : "+readUTF);
+				// se.disconnect();
+				// }
+
+				// Tutup server
+				server.close();
+			} catch (SocketTimeoutException s) {
+				System.out.println("Socket timed out!");
+				// break;
+			} catch (IOException e) {
+				System.exit(0);
+				e.printStackTrace();
+				// break;
+			}
+		}
+	}
+	
+	public void stopSocketService () {
+		this.loop = true;
+	}
+	
+	public void startSocketService() {
+		this.loop = false;
+	}
+
+	public static void main(String[] args) {
+		try {
+			Thread t = new SocketService(AppPort.SocketPort);
+			t.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

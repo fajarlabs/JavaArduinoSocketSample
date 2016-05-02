@@ -1,2 +1,4 @@
 1461796245344	Rename type 'FArduino'
 1461796256951	Rename type 'FSocket'
+1462060332060	Rename package 'com.arduinosocketserver.controller'
+1462060346991	Rename package 'com.arduinosocketserver.util'

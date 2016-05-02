@@ -1,0 +1,12 @@
+package com.app.controller;
+
+import com.app.sqlite.dao.AppArduinoSwitchDAO;
+import com.app.sqlite.model.AppArduinoSwitch;
+
+public class SQLite_JDBC {
+	public static void main(String args[]) {
+		//AppArduinoSwitchDAO.createTable();
+
+		AppArduinoSwitchDAO.find(new AppArduinoSwitch(1,"MERDERKA",null));
+	}
+}

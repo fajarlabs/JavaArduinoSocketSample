@@ -1,0 +1,8 @@
+package com.app.socket.util;
+
+import java.net.ServerSocket;
+
+public class SocketServerUtil {
+
+	private ServerSocket serverSocket;
+}

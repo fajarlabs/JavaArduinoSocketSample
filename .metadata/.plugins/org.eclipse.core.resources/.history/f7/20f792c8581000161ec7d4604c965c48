@@ -1,0 +1,117 @@
+package com.app.socket.util;
+
+public class SocketServerUtil {
+
+//	private ServerSocket serverSocket;
+//	private Socket socket;
+//	private Integer port, timeOut;
+//	
+//	public SocketServerUtil(int port, int timeOut) {
+//		this.port = port;
+//		this.timeOut = timeOut;
+//		
+//		// Accept connection
+//		try {
+//			serverSocket = new ServerSocket(port);
+//			serverSocket.setSoTimeout(timeOut);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	public SocketServerUtil() {}
+//	
+//	public Boolean init() {
+//		try {
+//			serverSocket = new ServerSocket(port);
+//			serverSocket.setSoTimeout(timeOut);
+//			return true;
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return false;
+//	}
+//	
+//	public Boolean connect() {
+//		try {
+//			socket = serverSocket.accept();
+//			return true;
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}		
+//		
+//		return false;
+//	}
+//	
+//	public int getLocalPort() {
+//		return this.socket.getLocalPort();
+//	}
+//	
+//	public String getHostName() {
+//		InetAddress i = this.socket.getLocalAddress();
+//		return i.getHostName();
+//	}
+//	
+//	public Boolean sendData(String message) {
+//		DataOutputStream out = null ;
+//		try {
+//			out = new DataOutputStream(socket.getOutputStream());
+//			out.writeUTF(message);
+//			return true;
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		return false;
+//	}
+//	
+//	public Boolean disconnect() {
+//		if(!socket.isClosed()) {
+//			try {
+//				socket.close();
+//				return true;
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		return false;
+//		
+//	}
+//	
+//	public String receiveData() {
+//		// Input stream
+//		DataInputStream in;
+//		String readUTF = null;
+//		try {
+//			in = new DataInputStream(socket.getInputStream());
+//			// Receive Data
+//			readUTF = in.readUTF();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//		
+//		return readUTF;
+//	}
+//	
+//	public Integer getPort() {
+//		return port;
+//	}
+//
+//	public void setPort(Integer port) {
+//		this.port = port;
+//	}
+//
+//	public Integer getTimeOut() {
+//		return timeOut;
+//	}
+//
+//	public void setTimeOut(Integer timeOut) {
+//		this.timeOut = timeOut;
+//	}
+}

@@ -1,0 +1,15 @@
+package com.app.controller;
+
+import java.util.List;
+
+import com.app.sqlite.dao.AppArduinoSwitchDAO;
+import com.app.sqlite.model.AppArduinoSwitch;
+
+public class SQLite_JDBC {
+	public static void main(String args[]) {
+		List<AppArduinoSwitch> result = AppArduinoSwitchDAO.read();
+		for(AppArduinoSwitch res : result) {
+			System.out.println(res.getSwitchName());
+		}
+	}
+}

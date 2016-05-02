@@ -1,0 +1,76 @@
+package com.app.sqlite.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class SQLiteUtil {
+
+	private static SQLiteUtil instance;
+	private Connection c;
+	private Statement stmt;
+
+	// Singleton
+	public static SQLiteUtil getInstance() {
+		if (instance == null) {
+			instance = new SQLiteUtil();
+		}
+		return instance;
+	}
+	
+	public Connection BuildFactoryConnection() {
+		Connection c = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager.getConnection("jdbc:sqlite:App.db");
+		} catch (ClassNotFoundException | SQLException e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		}
+		
+		return c;
+	}
+
+	public Statement createStatement() {
+
+		// If statement not null and is closed ?
+		if (stmt != null) {
+			try {
+				if (stmt.getConnection().isClosed()) {
+					stmt = null;
+					c = BuildFactoryConnection();
+					stmt = c.createStatement();
+				} 
+			} catch (SQLException e) {
+				System.err.println(e.getClass().getName() + ": " + e.getMessage());
+				System.exit(0);
+			}
+		}
+		
+		// If statement is null ?
+		if(stmt == null) {
+			try {
+				c = BuildFactoryConnection();
+				stmt = c.createStatement();
+			} catch (SQLException e) {
+				System.err.println(e.getClass().getName() + ": " + e.getMessage());
+				System.exit(0);
+			}
+		}
+
+		return stmt;
+	}
+
+	public ResultSet query(String sql) {
+		ResultSet rs = null;
+		try {
+			createStatement().executeQuery(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
+	}
+}

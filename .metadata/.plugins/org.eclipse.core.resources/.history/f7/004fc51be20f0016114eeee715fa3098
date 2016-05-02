@@ -1,0 +1,16 @@
+package com.app.util;
+
+public class AppPath {
+	// Log Path
+	public static final String ERROR_LOG = "C:\\Account_Management\\logs\\ErrorLog.log";
+	public static final String WEB_LOG = "C:\\Account_Management\\logs\\WebLog.log";
+	public static final String XML_OPTION_AUTOSTART = "C:\\Account_Management\\config\\optionXMLAutostart.xml";
+	public static final String XML_OPTION_WEBSTART = "C:\\Account_Management\\config\\optionXMLWebstart.xml";
+	
+	// E-Ktp Path
+	public final static String ADB_DRIVER = "C:\\Account_Management\\drivers\\E-KTP\\ADB-Drivers\\usb\\platform-tools\\adb.exe";
+	public final static String PUB_KEY = "C:\\Account_Management\\drivers\\E-KTP\\public.key";
+	
+	// Command
+	public final static String TOMCAT7 = "C:\\Account_Management\\apache64\\bin\\tomcat7.exe";
+}

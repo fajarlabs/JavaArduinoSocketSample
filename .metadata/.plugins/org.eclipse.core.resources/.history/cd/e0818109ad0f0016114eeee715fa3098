@@ -1,0 +1,15 @@
+package com.app.controller;
+
+import com.app.sqlite.dao.AppArduinoSwitchDAO;
+import com.app.sqlite.model.AppArduinoSwitch;
+
+public class SQLite_JDBC {
+	public static void main(String args[]) {
+		//AppArduinoSwitchDAO.createTable();
+		
+		AppArduinoSwitchDAO.add(new AppArduinoSwitch(1,"S1","a"));
+		AppArduinoSwitchDAO.add(new AppArduinoSwitch(2,"S2","b"));
+		AppArduinoSwitchDAO.add(new AppArduinoSwitch(3,"S3","c"));
+		AppArduinoSwitchDAO.add(new AppArduinoSwitch(4,"S4","d"));
+	}
+}

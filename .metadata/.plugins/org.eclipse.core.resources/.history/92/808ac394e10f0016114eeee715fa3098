@@ -1,0 +1,44 @@
+package com.app.ws.publisher;
+import javax.xml.ws.Endpoint;
+
+import org.apache.log4j.Logger;
+
+import com.app.ws.endpoint.DataImpl;;
+/**
+ * 
+ * @author masfajar
+ *
+ */
+
+//Endpoint publisher
+public class DataPublisher{
+	private Endpoint ep;
+	private String url;
+	final static Logger logger = Logger.getLogger(DataPublisher.class);
+	
+	public DataPublisher(String url) {
+		this.url = url;
+	}
+	
+	public void start() {
+		try {
+			ep = Endpoint.create(new DataImpl());
+			ep.publish(this.url);
+		} catch (Exception e) {
+			logger.error("Error Exception ",e);
+		}
+	}
+	
+	public void stop() {
+		try {
+			ep.stop();
+		} catch (Exception e) {
+			logger.error("Error Exception ",e);
+		}
+	}
+	
+	public Endpoint getEp() {
+		return ep;
+	}
+
+}

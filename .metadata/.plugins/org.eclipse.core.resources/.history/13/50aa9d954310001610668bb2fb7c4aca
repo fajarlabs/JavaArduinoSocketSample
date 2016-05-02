@@ -1,0 +1,5 @@
+package com.app.socket.util;
+
+public class SocketServerUtil {
+
+}

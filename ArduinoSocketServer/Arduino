@@ -1,30 +1,58 @@
-int led = 13; // LED connected to digital pin 13
-int pts = 2;  // Powertail Switch 2 connected to digital pin 2
+// Define pin output
+const int pinOutput[] = {
+  10,11,13}; // Red, Green, Yellow
+
+// Count pin
+int countPin;
+
 int recv = 0; // byte received on the serial port
- 
+
 void setup() {
-  // initialize onboard LED (led), Powertail (pts) and serial port
-  pinMode(led, OUTPUT);
-  pinMode(pts, OUTPUT);
+  // Pin Output
+  countPin = (sizeof(pinOutput)/sizeof(*pinOutput));
+  for(int p = 0; p < countPin; p++)
+    pinMode(pinOutput[p], OUTPUT);
+
+  // Serial style
   Serial.begin(9600);
 }
- 
+
 void loop()
 {
   // if serial port is available, read incoming bytes
   if (Serial.available() > 0) {
     recv = Serial.read();
- 
-    // if 'y' (decimal 121) is received, turn LED/Powertail on
-    // anything other than 121 is received, turn LED/Powertail off
-    if (recv == 121){
-      digitalWrite(led, HIGH);
-      digitalWrite(pts,LOW);
-    } else {
-      digitalWrite(led, LOW);
-      digitalWrite(pts,HIGH);
+
+    // Lampu 1
+    // a -> hidup
+    // A -> mati
+    if (recv == 97) { // y
+      digitalWrite(pinOutput[2], HIGH);
+    } 
+    else if(recv == 65){
+      digitalWrite(pinOutput[2], LOW);
     }
-     
+
+    // Lampu 2
+    // b -> hidup
+    // B -> mati
+    if(recv == 98) {
+      digitalWrite(pinOutput[0],HIGH);
+    } 
+    else if(recv == 66)  {
+      digitalWrite(pinOutput[0],LOW);
+    }
+
+    // Lampu 3
+    // c -> hidup
+    // C -> mati
+    if(recv == 99) {
+      digitalWrite(pinOutput[1],HIGH);
+    } 
+    else if(recv == 67) {
+      digitalWrite(pinOutput[1],LOW);
+    }
+
     // confirm values received in serial monitor window
     Serial.print("--Arduino received: ");
     Serial.println(recv);

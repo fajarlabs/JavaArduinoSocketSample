@@ -1,0 +1,27 @@
+package com.app.ws.endpoint;
+import javax.jws.WebService;
+
+import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import com.app.ws.concept.IData;
+
+//Service Implementation
+@WebService(endpointInterface = "com.app.ws.concept.IData")
+public class DataImpl implements IData {
+
+	final static Logger logger = Logger.getLogger(DataImpl.class);
+
+	@Override
+	public String getQueue(String name) {
+		
+		JSONObject obj = new JSONObject();
+		JSONArray list = new JSONArray();
+
+		obj.put("data", list);
+		
+		return obj.toJSONString();
+	}
+
+}

@@ -1,0 +1,42 @@
+package com.app.sqlite.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class SQLiteUtil {
+	
+	private static SQLiteUtil instance;
+    private Connection c = null;
+    private Statement stmt = null;
+	
+	// Singleton
+	public static SQLiteUtil getInstance() {
+		if(instance == null) {
+			instance = new SQLiteUtil();
+		}
+		return instance;
+	}
+	
+	public void exec() {
+	    Connection c = null;
+	    Statement stmt = null;
+	    try {
+	      Class.forName("org.sqlite.JDBC");
+	      c = DriverManager.getConnection("jdbc:sqlite:App.db");
+	      System.out.println("Opened database successfully");
+
+	      stmt = c.createStatement();
+	      String sql = "CREATE TABLE APP_ARDUINO_SWITCH " +
+	                   "(ID INT PRIMARY KEY     NOT NULL," +
+	                   " SWITCH_NAME    CHAR(5)    NOT NULL, " + 
+	                   " SWITCH_ACTIVE  INT     NOT NULL)"; 
+	      stmt.executeUpdate(sql);
+	      stmt.close();
+	      c.close();
+	    } catch ( Exception e ) {
+	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	      System.exit(0);
+	    }
+	}
+}

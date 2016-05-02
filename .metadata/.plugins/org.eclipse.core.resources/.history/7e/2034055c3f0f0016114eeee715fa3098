@@ -1,0 +1,56 @@
+package com.app.sqlite.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.app.sqlite.model.AppArduinoSwitch;
+import com.app.sqlite.util.SQLiteUtil;
+
+public class AppArduinoSwitchDAO {
+	
+	public static int createTable() {
+		String sql = "CREATE TABLE APP_ARDUINO_SWITCH " + "(ID INT PRIMARY KEY     NOT NULL,"
+				+ " SWITCH_NAME    CHAR(5)    NOT NULL, " + " SWITCH_ACTIVE  INT     NOT NULL)";
+		int result = 0;
+		try {
+			result = SQLiteUtil.getInstance().createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public static int add(AppArduinoSwitch data) {
+		String sql = "INSERT INTO APP_ARDUINO_SWITCH VALUES ("+data.getId()+",'"+data.getSwitchName()+"',"+data.getSwitchActive()+")";
+		
+		int result = 0;
+		try {
+			result = SQLiteUtil.getInstance().createStatement().executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public static List<AppArduinoSwitch> read() {
+		String sql = "SELECT * FROM APP_ARDUINO_SWITCH";
+		ResultSet rs = null;
+		List<AppArduinoSwitch> result = new ArrayList<AppArduinoSwitch>();
+		try {
+			rs = SQLiteUtil.getInstance().createStatement().executeQuery(sql);
+			while(rs.next()) {
+				result.add(new AppArduinoSwitch(rs.getInt("ID"), ((String)rs.getObject("SWITCH_NAME")).charAt(0), rs.getInt("SWITCH_VALUE")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+}

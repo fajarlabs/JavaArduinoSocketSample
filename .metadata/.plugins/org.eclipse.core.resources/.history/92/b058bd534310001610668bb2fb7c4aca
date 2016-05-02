@@ -1,0 +1,6 @@
+package com.app.config;
+
+public class AppPort {
+	// Log Path
+	public static Integer SocketPort = 11213;
+}

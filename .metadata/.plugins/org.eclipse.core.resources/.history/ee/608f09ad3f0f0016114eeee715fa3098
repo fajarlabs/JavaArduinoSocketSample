@@ -1,0 +1,9 @@
+package com.app.controller;
+
+import com.app.sqlite.dao.AppArduinoSwitchDAO;
+
+public class SQLite_JDBC {
+	public static void main(String args[]) {
+		System.out.println(AppArduinoSwitchDAO.read());
+	}
+}
